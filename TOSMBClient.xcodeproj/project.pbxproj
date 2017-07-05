@@ -68,7 +68,7 @@
 		22CB5AEB1B78929B006F05F2 /* TORootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 22CB5AEA1B78929B006F05F2 /* TORootViewController.m */; };
 		22FA84951DC098B700634DB7 /* TONetBIOSNameServiceEntryPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22FA84931DC098B700634DB7 /* TONetBIOSNameServiceEntryPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		22FA849A1DC0996900634DB7 /* TOSMBSessionFilePrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22FA84981DC0996900634DB7 /* TOSMBSessionFilePrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		E82FE0301DD91955008E82FA /* TOSMBSessionTask.h in Headers */ = {isa = PBXBuildFile; fileRef = E82FE02E1DD91955008E82FA /* TOSMBSessionTask.h */; };
+		E82FE0301DD91955008E82FA /* TOSMBSessionTask.h in Headers */ = {isa = PBXBuildFile; fileRef = E82FE02E1DD91955008E82FA /* TOSMBSessionTask.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E82FE0311DD91955008E82FA /* TOSMBSessionTask.m in Sources */ = {isa = PBXBuildFile; fileRef = E82FE02F1DD91955008E82FA /* TOSMBSessionTask.m */; };
 		E842C6BE1DDA48040017A7AD /* TOSMBSessionTask.m in Sources */ = {isa = PBXBuildFile; fileRef = E82FE02F1DD91955008E82FA /* TOSMBSessionTask.m */; };
 		E842C6BF1DDA480B0017A7AD /* TOSMBSessionUploadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = E8431A071DCD53DD0007BCFA /* TOSMBSessionUploadTask.m */; };
