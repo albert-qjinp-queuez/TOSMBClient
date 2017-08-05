@@ -29,6 +29,7 @@
 #import "TONetBIOSNameService.h"
 #import "TOSMBSessionDownloadTaskPrivate.h"
 #import "TOSMBSessionUploadTaskPrivate.h"
+#import "TOSMBSessionDeleteTaskPrivate.h"
 
 #import "smb_session.h"
 #import "smb_share.h"
@@ -47,6 +48,7 @@
 
 @property (nonatomic, strong) NSArray <TOSMBSessionDownloadTask *> *downloadTasks;
 @property (nonatomic, strong) NSArray <TOSMBSessionUploadTask *> *uploadTasks;
+@property (nonatomic, strong) NSArray <TOSMBSessionDeleteTask *> *deleteTasks;
 
 @property (nonatomic, strong) NSDate *lastRequestDate;
 
@@ -408,6 +410,16 @@
     return task;
 }
 
+- (TOSMBSessionDeleteTask *)deleteTaskForFileAtPath:(NSString *)path
+                                  completionHandler:(void (^)(void))completionHandler
+                                        failHandler:(void (^)(NSError *error))failHandler{
+  TOSMBSessionDeleteTask *task = [[TOSMBSessionDeleteTask alloc] initWithSession:self
+                                                                            path:path
+                                                                  successHandler:completionHandler
+                                                                     failHandler:failHandler];
+  self.deleteTasks = [self.deleteTasks ?: @[] arrayByAddingObject:task];
+  return task;
+}
 #pragma mark - String Parsing -
 - (NSString *)shareNameFromPath:(NSString *)path
 {

@@ -25,8 +25,10 @@
 
 @class TOSMBSessionDownloadTask;
 @class TOSMBSessionUploadTask;
+@class TOSMBSessionDeleteTask;
 
 @protocol TOSMBSessionDownloadTaskDelegate;
+@protocol TOSMBSessionDeleteTaskDelegate;
 
 @interface TOSMBSession : NSObject
 
@@ -41,6 +43,7 @@
 
 @property (nonatomic, readonly) NSArray <TOSMBSessionDownloadTask *> *downloadTasks;
 @property (nonatomic, readonly) NSArray <TOSMBSessionUploadTask *> *uploadTasks;
+@property (nonatomic, readonly) NSArray <TOSMBSessionDeleteTask *> *deleteTasks;
 
 @property (nonatomic, readonly) dispatch_queue_t serialQueue;
 @property (nonatomic, readonly) NSOperationQueue *taskQueue;
@@ -144,6 +147,20 @@
                                     progressHandler:(void (^)(uint64_t totalBytesWritten, uint64_t totalBytesExpected))progressHandler
                                   completionHandler:(void (^)(void))completionHandler
                                         failHandler:(void (^)(NSError *error))failHandler;
+
+/**
+ Creates an delete task object for asynchronously deleting a file.
+ 
+ @param path The destination path (Either just the directory, or even a new name) for this file.
+ @param completionHandler A block called once the download has completed.
+ @param failHandler A block called if the download fails
+ 
+ @return An upload task object ready to be started, or nil upon failure.
+ */
+- (TOSMBSessionDeleteTask *)deleteTaskForFileAtPath:(NSString *)path
+                                  completionHandler:(void (^)(void))completionHandler
+                                        failHandler:(void (^)(NSError *error))failHandler;
+
 
 @end
 
