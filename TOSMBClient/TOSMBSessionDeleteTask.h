@@ -12,7 +12,7 @@
 @protocol TOSMBSessionDeleteTaskDelegate <TOSMBSessionTaskDelegate>
 @optional
 
-- (void)deleteTaskDidFinishUploading:(TOSMBSessionDeleteTask *)task;
+- (void)deleteTaskDidFinish:(TOSMBSessionDeleteTask *)task;
 
 @end
 

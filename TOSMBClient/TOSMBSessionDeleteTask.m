@@ -35,7 +35,12 @@
 - (instancetype)initWithSession:(TOSMBSession *)session
                            path:(NSString *)path
                            data:(NSData *)data
-                       delegate:(id <TOSMBSessionDeleteTaskDelegate>)delegate{
+                       delegate:(id <TOSMBSessionDeleteTaskDelegate>)delegate {
+    if ((self = [super initWithSession:session] )) {
+        _sourceFilePath = path;
+        self.delegate = delegate;
+    }
+    
   return nil;
 }
 
@@ -43,7 +48,13 @@
                            path:(NSString *)path
                  successHandler:(id)successHandler
                     failHandler:(id)failHandler{
-  return nil;
+    if ((self = [super initWithSession:session])) {
+        self.session = session;
+        _sourceFilePath = path;
+        self.successHandler = successHandler;
+        self.failHandler = failHandler;
+    }
+  return self;
 }
 - (void)performTaskWithOperation:(NSBlockOperation * _Nonnull)weakOperation {
   if (weakOperation.isCancelled)
@@ -124,10 +135,10 @@
   int errorCode = smb_file_rm(self.smbSession, treeID, [formattedPath cStringUsingEncoding:NSUTF8StringEncoding]);
   switch (errorCode) {
     case 0://success
-      
-      break;
-      
+          [self didSucceed];
+          break;
     default:
+          [self didFailWithError:errorForErrorCode(errorCode)];
       break;
   }
   
@@ -145,5 +156,40 @@
   //Perform a final cleanup of all handles and references
   self.cleanupBlock(treeID, fileID);
 }
+
+
+- (void)didSucceed
+{
+    __weak typeof(self.delegate) delegate = self.delegate;
+    __weak typeof(self) weakSelf = self;
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        if (delegate && [delegate respondsToSelector:@selector(deleteTaskDidFinish:)]) {
+            [delegate deleteTaskDidFinish:weakSelf];
+        }
+        
+        if (weakSelf.successHandler) {
+            weakSelf.successHandler();
+        }
+    });
+    
+}
+
+- (void)didFailWithError:(NSError *)error
+{
+    [super didFailWithError:error];
+    
+    __weak typeof(self.delegate) delegate = self.delegate;
+    __weak typeof(self) weakSelf = self;
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        if (delegate && [delegate respondsToSelector:@selector(deleteTaskDidFinish:)]){
+            [delegate deleteTaskDidFinish:weakSelf];
+        }
+
+        if (self.failHandler){
+            self.failHandler(error);
+        }
+    });
+}
+
 
 @end

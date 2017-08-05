@@ -79,7 +79,8 @@ NSString *localizedStringForErrorCode(TOSMBSessionErrorCode errorCode)
             break;
         case TOSMBSessionErrorCodeUnknown:
         default:
-            errorMessage = @"Unknown Error Occurred.";
+            errorMessage =
+            [NSString stringWithFormat:@"%@ %ld",@"Unknown Error Occurred:", (long)errorCode];
             break;
     }
     
