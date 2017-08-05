@@ -59,13 +59,13 @@
  NetBIOS, but whereever possible, you should endeavour to supply both values on instantiation.
  
  @param name The host name of the network device
- @param address The IP address of the network device
+ @param ipAddress The IP address of the network device
  @return A new instance of a session object
  
  */
+- (instancetype)initWithHostName:(NSString *)name ipAddress:(NSString *)ipAddress;
 - (instancetype)initWithHostName:(NSString *)name;
 - (instancetype)initWithIPAddress:(NSString *)address;
-- (instancetype)initWithHostName:(NSString *)name ipAddress:(NSString *)ipAddress;
 
 /**
  Sets both the username and password for this login session. This should be set before any
@@ -89,8 +89,8 @@
  Performs an asynchronous request for a list of files from the network device for the given file path.
  
  @param path The file path to request. Supplying nil or "" will reuest the root list of share folders
- @param error A pointer to an NSError object that will be non-nil if an error occurs.
- @return An NSArray of TOSMBFile objects describing the contents of the file path
+ @param errorHandler A pointer to an NSError object that will be non-nil if an error occurs.
+ @param successHandler An NSArray of TOSMBFile objects describing the contents of the file path
  */
 - (void)requestContentsOfDirectoryAtFilePath:(NSString *)path success:(void (^)(NSArray *files))successHandler error:(void (^)(NSError *))errorHandler;
 

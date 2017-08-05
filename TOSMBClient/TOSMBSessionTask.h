@@ -35,7 +35,7 @@
  @param downloadTask The download task object calling this delegate method.
  @param error The error describing why the task failed.
  */
-- (void)task:(TOSMBSessionTask *)task didCompleteWithError:(NSError *)error;
+- (void)task:(TOSMBSessionTask *)downloadTask didCompleteWithError:(NSError *)error;
 
 @end
 
