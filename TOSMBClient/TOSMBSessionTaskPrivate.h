@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithSession:(TOSMBSession *)session;
 
-- (TOSMBSessionFile *)requestFileForItemAtPath:(NSString *)filePath inTree:(smb_tid)treeID;
+- (nullable TOSMBSessionFile *)requestFileForItemAtPath:(NSString *)filePath inTree:(smb_tid)treeID;
 
 - (void)fail;
 - (void)didFailWithError:(NSError *)error;

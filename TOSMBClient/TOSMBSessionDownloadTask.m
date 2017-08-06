@@ -85,7 +85,7 @@
 
 - (instancetype)initWithSession:(TOSMBSession *)session filePath:(NSString *)filePath destinationPath:(NSString *)destinationPath progressHandler:(id)progressHandler successHandler:(id)successHandler failHandler:(id)failHandler
 {
-    if (([super initWithSession:session])) {
+    if ((self = [super initWithSession:session])) {
         self.session = session;
         _sourceFilePath = filePath;
         _destinationFilePath = destinationPath.length ? destinationPath : [self documentsDirectory];
@@ -153,12 +153,12 @@
         folderPath = path;
     }
     
-    path = [folderPath stringByAppendingPathComponent:fileName];
-    
+//    path = [folderPath stringByAppendingPathComponent:fileName];
+  
     //If a file with that name already exists in the destination directory, append a number on the end of the file name
-    NSString *newFilePath = path;
     NSString *newFileName = fileName;
     NSInteger index = 1;
+    NSString *newFilePath = [folderPath stringByAppendingPathComponent:newFileName];
     while ([[NSFileManager defaultManager] fileExistsAtPath:newFilePath]) {
         newFileName = [NSString stringWithFormat:@"%@-%ld.%@", [fileName stringByDeletingPathExtension], (long)index++, [fileName pathExtension]];
         newFilePath = [folderPath stringByAppendingPathComponent:newFileName];
