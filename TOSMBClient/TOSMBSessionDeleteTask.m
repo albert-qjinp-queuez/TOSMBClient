@@ -7,7 +7,6 @@
 
 
 #import <CommonCrypto/CommonDigest.h>
-#import <Foundation/Foundation.h>
 
 #import "TOSMBSessionDeleteTask.h"
 #import "TOSMBSessionDeleteTaskPrivate.h"
