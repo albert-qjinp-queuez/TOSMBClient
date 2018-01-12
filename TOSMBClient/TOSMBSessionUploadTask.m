@@ -81,7 +81,7 @@
 - (void)didSendBytes:(NSInteger)recentCount bytesSent:(NSInteger)totalCount {
     __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([weakSelf.delegate respondsToSelector:@selector(uploadTaskForFileAtPath:data:progressHandler:completionHandler:failHandler:)]) {
+        if ([weakSelf.delegate respondsToSelector:@selector(uploadTask:didSendBytes:totalBytesSent:totalBytesExpectedToSend:)]) {
             [weakSelf.delegate uploadTask:self didSendBytes:recentCount totalBytesSent:totalCount totalBytesExpectedToSend:weakSelf.data.length];
         }
         if (weakSelf.progressHandler) {
@@ -138,8 +138,8 @@
     //Next attach to the share we'll be using
     NSString *shareName = [self.session shareNameFromPath:self.path];
     const char *shareCString = [shareName cStringUsingEncoding:NSUTF8StringEncoding];
-    smb_tree_connect(self.smbSession, shareCString, &treeID);
-    if (!treeID) {
+    
+    if (smb_tree_connect(self.smbSession, shareCString, &treeID) != 0) {
         [self didFailWithError:errorForErrorCode(TOSMBSessionErrorCodeShareConnectionFailed)];
         self.cleanupBlock(treeID, fileID);
         return;
