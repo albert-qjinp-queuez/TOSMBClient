@@ -23,10 +23,12 @@
 #import <Foundation/Foundation.h>
 #import "TOSMBConstants.h"
 
+@class TOSMBSessionReadTask;
 @class TOSMBSessionDownloadTask;
 @class TOSMBSessionUploadTask;
 @class TOSMBSessionDeleteTask;
 
+@protocol TOSMBSessionReadTaskDelegate;
 @protocol TOSMBSessionDownloadTaskDelegate;
 @protocol TOSMBSessionDeleteTaskDelegate;
 
@@ -41,6 +43,8 @@
 @property (nonatomic, readonly) BOOL connected;
 @property (nonatomic, readonly) NSInteger guest;
 
+
+@property (nonatomic, readonly) NSArray <TOSMBSessionReadTask *> *readTasks;
 @property (nonatomic, readonly) NSArray <TOSMBSessionDownloadTask *> *downloadTasks;
 @property (nonatomic, readonly) NSArray <TOSMBSessionUploadTask *> *uploadTasks;
 @property (nonatomic, readonly) NSArray <TOSMBSessionDeleteTask *> *deleteTasks;
@@ -98,6 +102,39 @@
  Cancels any and all file contents requests both actively occurring, and pending.
  */
 - (void)cancelAllRequests;
+
+/**
+ Creates a download task object for asynchronously downloading a file to
+ disk. Only files may be downloaded; folders will return an error.
+ 
+ File downloads are done to the '/tmp' directory and are only copied to the destination when they successfully complete.
+ If a file already exists in the destination directory with the same name, then this file's name will be changed before moving.
+ 
+ If a partial file is found in the tmp directory, the download will attempt to resume it, or simply fail in the process.
+ 
+ @param path The path on the SMB device for the file to download.
+ @param destinationPath The destination path (Either just the directory, or even a new name) for this file.
+ @param delegate A delegate object that will call update methods during the download.
+ 
+ @return A download task object ready to be started, or nil upon failure.
+ */
+- (TOSMBSessionReadTask *)readTaskForFileAtPath:(NSString *)path delegate:(id <TOSMBSessionReadTaskDelegate>)delegate;
+
+/**
+ Same as above, creates a download task object for asynchronously downloading a file to disk.
+ 
+ @param path The path on the SMB device for the file to download.
+ @param progressHandler A block periodically called as the download progresses.
+ @param completionHandler A block called once the download has completed.
+ @param failHandler A block called if the download fails
+ 
+ @return A download task object ready to be started, or nil upon failure.
+ */
+- (TOSMBSessionReadTask *)readTaskForFileAtPath:(NSString *)path
+                                        progressHandler:(void (^)(uint64_t totalBytesWritten, uint64_t totalBytesExpected))progressHandler
+                                      completionHandler:(void (^)(NSData *data))completionHandler
+                                            failHandler:(void (^)(NSError *error))failHandler;
+
 
 /**
  Creates a download task object for asynchronously downloading a file to
