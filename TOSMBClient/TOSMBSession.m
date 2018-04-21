@@ -27,6 +27,7 @@
 #import "TOSMBSessionFile.h"
 #import "TOSMBSessionFilePrivate.h"
 #import "TONetBIOSNameService.h"
+#import "TOSMBSessionReadTaskPrivate.h"
 #import "TOSMBSessionDownloadTaskPrivate.h"
 #import "TOSMBSessionUploadTaskPrivate.h"
 #import "TOSMBSessionDeleteTaskPrivate.h"
@@ -46,6 +47,7 @@
 @property (nonatomic, strong, null_resettable) NSOperationQueue *dataQueue; /* Operation queue for asynchronous data requests. */
 @property (nonatomic, strong, null_resettable) NSOperationQueue *taskQueue; /* Operation queue for task. */
 
+@property (nonatomic, strong) NSArray <TOSMBSessionReadTask *> *readTasks;
 @property (nonatomic, strong) NSArray <TOSMBSessionDownloadTask *> *downloadTasks;
 @property (nonatomic, strong) NSArray <TOSMBSessionUploadTask *> *uploadTasks;
 @property (nonatomic, strong) NSArray <TOSMBSessionDeleteTask *> *deleteTasks;
@@ -374,6 +376,24 @@
 {
     [self.dataQueue cancelAllOperations];
     [self.taskQueue cancelAllOperations];
+}
+
+#pragma mark - Read Tasks -
+- (TOSMBSessionReadTask *)readTaskForFileAtPath:(NSString *)path delegate:(id <TOSMBSessionReadTaskDelegate>)delegate{
+  
+  TOSMBSessionReadTask *task = [[TOSMBSessionReadTask alloc] initWithSession:self filePath:path delegate:delegate];
+  self.readTasks = [self.readTasks ? : @[] arrayByAddingObjectsFromArray:@[task]];
+  return task;
+}
+
+- (TOSMBSessionReadTask *)readTaskForFileAtPath:(NSString *)path
+                                progressHandler:(void (^)(uint64_t totalBytesWritten, uint64_t totalBytesExpected))progressHandler
+                              completionHandler:(void (^)(NSData *data))completionHandler
+                                    failHandler:(void (^)(NSError *error))failHandler{
+  
+  TOSMBSessionReadTask *task = [[TOSMBSessionReadTask alloc] initWithSession:self filePath:path progressHandler:progressHandler successHandler:completionHandler failHandler:failHandler];
+  self.readTasks = [self.readTasks ? : @[] arrayByAddingObjectsFromArray:@[task]];
+  return task;
 }
 
 #pragma mark - Download Tasks -
