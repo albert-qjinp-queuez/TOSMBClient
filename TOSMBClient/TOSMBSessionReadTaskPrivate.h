@@ -1,5 +1,5 @@
 //
-// TOSMBClient.h
+// TOSMBSessionReadTaskPrivate.h
 // Copyright 2015-2017 Timothy Oliver
 //
 // This file is dual-licensed under both the MIT License, and the LGPL v2.1 License.
@@ -19,31 +19,29 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 // -------------------------------------------------------------------------------
+//
+//  Created by Albert Park on 4/21/18.
+//
 
-//! Project version number for TOSMBClient.
-FOUNDATION_EXPORT double TOSMBClientVersionNumber;
+#ifndef TOSMBSessionReadTaskPrivate_h
+#define TOSMBSessionReadTaskPrivate_h
 
-//! Project version string for TOSMBClient.
-FOUNDATION_EXPORT const unsigned char TOSMBClientVersionString[];
-
-#import "TOSMBConstants.h"
-
-#import "TOSMBSession.h"
-#import "TOSMBSessionFile.h"
-#import "TOSMBSessionTask.h"
-#import "TOSMBSessionDownloadTask.h"
-#import "TOSMBSessionUploadTask.h"
 #import "TOSMBSessionReadTask.h"
-#import "TOSMBSessionDeleteTask.h"
-
-#import "TONetBIOSNameService.h"
-#import "TONetBIOSNameServiceEntry.h"
-
-#import "TOSMBConstants.h"
-
+#import "TOSMBSessionTaskPrivate.h"
 #import "TOSMBSession.h"
-#import "TOSMBSessionFile.h"
-#import "TOSMBSessionDownloadTask.h"
 
-#import "TONetBIOSNameService.h"
-#import "TONetBIOSNameServiceEntry.h"
+@interface TOSMBSessionReadTask () <TOSMBSessionConcreteTask>
+
+- (instancetype)initWithSession:(TOSMBSession *)session
+                       filePath:(NSString *)filePath
+                       delegate:(id<TOSMBSessionReadTaskDelegate>)delegate;
+
+- (instancetype)initWithSession:(TOSMBSession *)session
+                       filePath:(NSString *)filePath
+                progressHandler:(id)progressHandler
+                 successHandler:(id)successHandler
+                    failHandler:(id)failHandler;
+
+@end
+
+#endif /* TOSMBSessionReadTaskPrivate_h */
