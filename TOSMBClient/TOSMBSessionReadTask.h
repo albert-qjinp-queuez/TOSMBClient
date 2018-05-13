@@ -21,7 +21,7 @@
  If there was a file with the same name in the destination, the name of this file will be modified and this will be reflected in the
  `destinationPath` value
  
- @param readTask The download task object calling this delegate method.
+ @param readTask The download task object calling this delegaxte method.
  @param data data collected
  */
 - (void)readTask:(TOSMBSessionReadTask *)readTask didFinishDownloadingForData:(NSData *)data;

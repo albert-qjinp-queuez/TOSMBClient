@@ -63,7 +63,7 @@
   return self;
 }
 
-- (instancetype)initWithSession:(TOSMBSession *)session filePath:(NSString *)filePath destinationPath:(NSString *)destinationPath progressHandler:(id)progressHandler successHandler:(id)successHandler failHandler:(id)failHandler
+- (instancetype)initWithSession:(TOSMBSession *)session filePath:(NSString *)filePath progressHandler:(id)progressHandler successHandler:(id)successHandler failHandler:(id)failHandler
 {
   if ((self = [super initWithSession:session])) {
     self.session = session;
